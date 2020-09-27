@@ -13,9 +13,16 @@
 \usepackage{subcaption}
 \usepackage{tcolorbox}
 \usepackage{url}
+\usepackage{hyperref}
 
 \definecolor{editorGray}{rgb}{0.95, 0.95, 0.95}
 
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
 
 \lstset{%
     % Basic design
@@ -65,7 +72,7 @@
 
 \setlength{\parindent}{0in}
 
-\title{AA 274A: Principles of Robot Autonomy I \\ Section 2: ROS and Workstation}
+\title{AA 274A: Principles of Robot Autonomy I \\ Section 2: Workstation and ROS}
 \date{}
 
 \begin{document}
@@ -75,12 +82,12 @@
 
 Our goals for this section:
 \begin{enumerate}
-	\item Gain a basic understanding of the Robot Operating System (ROS) by implementing classes, nodes, and topics. Use catkin build tools and other commands to interact with ROS through the terminal.
-	\item Learn useful workstation commands.
-	\item Learn how group login accounts will work for the rest of the class. 
+    \item Learn useful workstation commands.
+    \item Learn how group login accounts will work for the rest of the class. 
+    \item Gain a basic understanding of the Robot Operating System (ROS) by implementing classes, nodes, and topics. Use catkin build tools and other commands to interact with ROS through the terminal.
 \end{enumerate}
 
-\textbf{NOTE}: The commands below were written from the perspective of a Ubuntu user. If you are using the VMware VM then these commands should work within it. If you are using Docker then remember to use the \texttt{run.sh} script from last section to run the ROS commands. Also, be mindful of the paths you use to execute files (keep in mind Docker's remapping of directories).
+% \textbf{NOTE}: The commands below were written from the perspective of a Ubuntu user. If you are using the VMware VM then these commands should work within it. If you are using Docker then remember to use the \texttt{run.sh} script from last section to run the ROS commands. Also, be mindful of the paths you use to execute files (keep in mind Docker's remapping of directories).
 
 To obtain the code for this section, navigate to your section directory from last time, and execute the following
 
@@ -88,7 +95,8 @@ To obtain the code for this section, navigate to your section directory from las
 git pull
 \end{lstlisting}
 
-\input{sec_problem1}
 \input{sec_problem2}
+
+\input{sec_problem1}
 
 \end{document}

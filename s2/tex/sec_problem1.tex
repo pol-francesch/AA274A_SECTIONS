@@ -14,12 +14,18 @@ So what are some of the basic tasks that ROS implements for us?
 
 Before we jump into these, let's go over the basics of how to use ROS.
 \subsection{Starting ROS}
+Each time a new terminal is opened, you'll have to run
+\begin{lstlisting}
+roslocal
+\end{lstlisting}
+This command sources necessary bash scripts and must be run before running ROS.
+
 %Add section about source /opt/ros/_/setup into ~/.bashrc.user if ROS does not come nicely pre-installed
 To start ROS, run the following command 
-
 \begin{lstlisting}
-roscore # In Docker, this would be ./run.sh roscore
+roscore
 \end{lstlisting}
+% roscore # In Docker, this would be ./run.sh roscore
 This command starts a ROS master, which is just a naming service. Any time a new node starts in the system, it will have to register with the master. Then, the master will keep track of that node until it closes. The ROS master, in turn, provides a bridge that allows nodes to communicate with each other.
 
 Running roscore will also start a few other processes including \textbf{rosout}, which is a ROS-specific \texttt{stdout}, and a \textbf{parameter server} that allows you to share parameters across nodes.   
@@ -29,8 +35,9 @@ What's a \textbf{node}? A node is any executable program that uses ROS to commun
 To list all of your running nodes, run:
 
 \begin{lstlisting}
-rosnode list # In Docker, this would be ./run.sh rosnode list
+rosnode list
 \end{lstlisting}
+% rosnode list # In Docker, this would be ./run.sh rosnode list
 
 \subsection{ROS Communication}
 One way that nodes can communicate with each other is by sending \textbf{messages} over \textbf{topics}. A \textbf{message} is a strongly-typed set of data, and the structure of that data is a \textbf{.msg} file. A topic is an address that nodes can either send data to or receive data from. Importantly, only one message type can be sent over a topic. 
@@ -60,7 +67,7 @@ ROS uses these pre-defined message types so that nodes can know how to communica
 
 \textbf{Problem 1: Create your own message file consisting of multiple standard data types. This can be bool, string, float64, char, int64, and many more.}
 
-See \url{http://docs.ros.org/kinetic/api/std_msgs/html/index-msg.html} for the full list of standard messages.
+See the \href{http://docs.ros.org/kinetic/api/std_msgs/html/index-msg.html}{documentation} for the full list of standard messages.
 
 %One message type comment is half-true
 
@@ -86,15 +93,17 @@ All of the code we write will be located inside of a catkin workspace. To create
 
 \begin{lstlisting}
 catkin_create_pkg aa274_s2 std_msgs rospy message_generation
-# In Docker, the easiest way to do this would be to first get a shell with 
-# ./run.sh bash 
-# and then cd to the src directory, followed by running the 
-# catkin_create_pkg ... command.
 \end{lstlisting}
+% # In Docker, the easiest way to do this would be to first get a shell with 
+% # ./run.sh bash 
+% # and then cd to the src directory, followed by running the 
+% # catkin_create_pkg ... command.
 
 This will create a new package called \texttt{aa274\_s2} in the \texttt{src} folder. The last three arguments are library dependencies that this package will require to run.
 
-Now change into the \texttt{aa274\_s2} directory. You will see that there are three items in it: \texttt{CMakeLists.txt}, \texttt{package.xml}, and an empty \texttt{src} folder. Go ahead and copy the scripts folder and the msg folder from the section code into \texttt{aa274\_s2}. If you're using Docker, remember that you can change files as normal (without Docker) under the \texttt{catkin\_ws} folder, since they are mapped to the Docker container during use. Now, let's take a few minutes to inspect those first two files.
+Now change into the \texttt{aa274\_s2} directory. You will see that there are three items in it: \texttt{CMakeLists.txt}, \texttt{package.xml}, and an empty \texttt{src} folder. Go ahead and copy the scripts folder and the msg folder from the section code into \texttt{aa274\_s2}.
+
+% If you're using Docker, remember that you can change files as normal (without Docker) under the \texttt{catkin\_ws} folder, since they are mapped to the Docker container during use. Now, let's take a few minutes to inspect those first two files.
 
 \texttt{CMakeLists.txt} is the most important file here, since it specifies what needs to be built and generated when we run our catkin build command. Since we have custom messages, we need to take an extra step.
 
@@ -118,12 +127,15 @@ chmod +x scripts/publisher.py
 chmod +x scripts/subscriber.py
 \end{lstlisting}
 
-Now, switch back into the \texttt{catkin\_ws} folder (this is not necessary if you're using Docker). You're ready to build your package. To build, run
+% Now, switch back into the \texttt{catkin\_ws} folder (this is not necessary if you're using Docker). You're ready to build your package. To build, run
+Now, switch back into the \texttt{catkin\_ws} folder. You're ready to build your package. To build, run
 
 \begin{lstlisting}
-catkin_make # In Docker, this would be ./run.sh catkin_make
-source devel/setup.bash # Not necessary in Docker.
+catkin_make
+source devel/setup.bash
 \end{lstlisting}
+% catkin_make # In Docker, this would be ./run.sh catkin_make
+% source devel/setup.bash # Not necessary in Docker.
 
 The first command calls catkin to build our package, and the second command updates the ROS environment so that it recognizes your newly built package.
 
@@ -142,7 +154,7 @@ rosrun aa274_s2 subscriber.py
 \end{lstlisting}
 The advantage of this second method is that it allows you to run your script from anywhere on your system, while the first method requires you to know the full path to the script.
 
-Try running both of your scripts now using one of these methods. Note that if your custom message does not include a "data" member, then the subscriber will error. To fix this, change the callback to print either one or several valid members.
+Try running both of your scripts now using one of these methods. Note that if your custom message does not include a ``data'' member, then the subscriber will error. To fix this, change the callback to print either one or several valid members.
 
 \textbf{Problem 3: Include screenshots or terminal output text that shows your publisher and subscriber are working.}
 

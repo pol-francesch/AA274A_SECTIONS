@@ -1,8 +1,25 @@
 \section{Workstation}
-As some of you may have realized last section (and potentially even this section), VMs can be computationally expensive, making them cumbersome to work with. As a result, we've obtained a powerful server which gives you a VM-free ROS option in this course. For any homework that has a ROS or Gazebo question, you can either use your own VMs or this workstation. Further, if you or your robot group need to simulate something with Gazebo for your final project, you can also use this workstation.
+% As some of you may have realized last section (and potentially even this section), VMs can be computationally expensive, making them cumbersome to work with. 
+Because a full ROS software stack (with simulation and visualization) can be computationally expensive to run locally, we've obtained a powerful server which gives you a VM-free ROS option in this course. For any homework that has a ROS or Gazebo question, you will be using this provided workstation and work with your final project partners to complete the assignment.
+% you can either use your own VMs or this workstation. Further, if you or your robot group need to simulate something with Gazebo for your final project, you can also use this workstation.
 
-Please note that to interact with your robots later on, you'll need to have a local machine with ROS on it (the workstation is on a different network). Otherwise, if the homework only requires Python then you should use your local machines and/or Stanford FarmShare machines.
+% Please note that to interact with your robots later on, you'll need to have a local machine with ROS on it (the workstation is on a different network). Otherwise, if the homework only requires Python then you should use your local machines and/or Stanford FarmShare machines.
 
+\subsection*{Group Accounts}
+There are 30 group accounts on the machine. They are named \texttt{group01} to \texttt{group30}, each identically set up with ROS and all its dependencies.
+% (30 because we will support 30 final project groups because we have 30 robots)
+
+To access the workstation, install TurboVNC.\\
+\emph{Mac users:} You may have to install \href{https://www.oracle.com/java/technologies/javase-jdk15-downloads.html}{Oracle JDK} if you run into a JRE error.
+
+To connect to the workstation, open up TurboVNC and connect to the server
+\begin{lstlisting}
+genbu.stanford.edu:{account #}
+\end{lstlisting}
+If you're working remotely, then you'll have to install \href{https://uit.stanford.edu/service/vpn}{Stanford VPN} first.
+The TA will assign each group an account number from \texttt{01} to \texttt{30} and provide the corresponding password.
+
+\subsection*{Interfacing}
 Below are several useful commands you'll use to either interface with the workstation or directly use it.
 \begin{enumerate}
     \item \texttt{ssh} - Use this command to access the server
@@ -20,6 +37,3 @@ Below are several useful commands you'll use to either interface with the workst
     \item What version of Python is available on the machine?
 \end{enumerate}
 Include these in your writeup.}
-
-\section{Group Accounts}
-There are 30 group accounts on the machine (30 because we will support 30 final project groups because we have 30 robots). They are named \texttt{group01} to \texttt{group30}, each identically set up with ROS and all its dependencies.
