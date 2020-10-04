@@ -1,0 +1,27 @@
+\section{The Turtlebot Software}
+Most of the forward-facing Turtlebot software you will work with is located in the \texttt{asl\_turtlebot} repository on Github. To get it, go to \texttt{\textasciitilde/catkin\_ws/src} and run:
+
+\begin{lstlisting}
+git clone https://github.com/StanfordASL/asl_turtlebot.git
+\end{lstlisting}
+
+Since we downloaded a new catkin package, we need to rebuild the workspace by running the following from the \texttt{\textasciitilde/catkin\_ws} directory.
+
+\begin{lstlisting}
+catkin_make
+\end{lstlisting}
+
+\subsection{Turtlebot bring up}
+Once logged in to Genbu, start roscore:
+
+\begin{lstlisting}
+roscore -p $ROS_PORT
+\end{lstlisting}
+
+In a new terminal window, run the Gazebo environment:
+
+\begin{lstlisting}
+roslaunch turtlebot3_gazebo turtlebot3_world.launch
+\end{lstlisting}
+
+{\bf Problem 1: Once this is all running, which rostopics are available? Paste this list in your submission.}
