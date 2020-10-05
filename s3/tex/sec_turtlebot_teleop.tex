@@ -14,7 +14,7 @@ roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
 {\bf Problem 2: What is the message type being published to \texttt{odom} and what information is contained within these messages?}
 
 \subsection{Pub to cmd\_vel}
-Using our code from last week's section, create a publisher that publishes to the \texttt{cmd\_vel} topic and sends a zero velocity signal at every timestep. The skeleton code for this included in this week's code in the \texttt{velocity\_publisher.py} file
+Using our code from last week's section, create a publisher that publishes to the \texttt{cmd\_vel} topic and sends a zero velocity signal at every timestep. The skeleton code for this included in this week's code in the \texttt{velocity\_publisher.py} file. In particular, you should send out a message of type \texttt{geometry\_msgs/Twist}, with information for how to populate it available online. Some resources that help are the \href{http://docs.ros.org/melodic/api/geometry_msgs/html/msg/Twist.html}{ROS documentation on it} as well as \href{https://github.com/StanfordASL/asl_turtlebot/blob/master/scripts/keyboard_teleop.py}{our own TurtleBot code} (look at line 155).
 
 {\bf Problem 3: Paste your code in your submission, as well as any of its running output.}
 
