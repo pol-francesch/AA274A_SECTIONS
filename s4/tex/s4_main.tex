@@ -43,7 +43,7 @@
 % set the header up
 \fancyhead{}
 \fancyhead[L]{Stanford Aeronautics \& Astronautics}
-\fancyhead[R]{Fall 2019}
+\fancyhead[R]{Fall 2020}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \renewcommand\headrulewidth{0.4pt}
@@ -80,13 +80,20 @@ Our goals for this section: \begin{enumerate}
 
 Before we dive into information visualization, we may have to install some packages to endow our robots with the necessary capabilities we're looking for. Chiefly, some of your turtlebots do not have the \texttt{velodyne} catkin package installed. This poses a problem since, without it, we cannot use the scans coming out of the velodyne.
 
-First, we need to check to see if the package is already on our robot. We can do this by \texttt{ssh}'ing into our robot (remember to first connect to the correct network):
-\begin{lstlisting}
-ssh aa274@<lowercase_robot_name>.local
-# If you're on a Windows VM and need the IP address of your bot, let a TA know.
-\end{lstlisting}
+% First, we need to check to see if the package is already on our robot. We can do this by \texttt{ssh}'ing into our robot (remember to first connect to the correct network):
+% \begin{lstlisting}
+% ssh aa274@<lowercase_robot_name>.local
+% # If you're on a Windows VM and need the IP address of your bot, let a TA know.
+% \end{lstlisting}
 
-Once inside the robot, you will need to check the contents of the \texttt{catkin\_ws/src} directory
+% Once inside the robot, you will need to check the contents of the \texttt{catkin\_ws/src} directory
+% \begin{lstlisting}
+% cd catkin_ws/src
+% ls
+% \end{lstlisting}
+% If you see a folder named \texttt{velodyne} then you already have the package.
+
+First, we need to check to see if the package is already in our catkin workspace. We can do this by checking the contents of the \texttt{catkin\_ws/src} directory
 \begin{lstlisting}
 cd catkin_ws/src
 ls
@@ -119,30 +126,31 @@ This will take some time, so leave it alone until it's fully finished. Once it c
 
 \subsection{Full Turtlebot bring up}
 
-\subsubsection{On-Campus Students}
+% \subsubsection{On-Campus Students}
 
-Next, in a terminal window, ssh into the TurtleBot using:
-\begin{lstlisting}
-ssh aa274@<lowercase_robot_name>.local
-\end{lstlisting}
-with the password \texttt{aa274}. This remotely logs into the onboard robot computer. Now that we have all of the necessary packages, we can go ahead and run:
-\begin{lstlisting}
-roslaunch asl_turtlebot turtlebot3_bringup_jetson_pi.launch
-\end{lstlisting}
-{\bf NOTE:} Only one person has to do this on the robot, once this is running then everyone else will be able to see the data we're going to visualize next.
+% Next, in a terminal window, ssh into the TurtleBot using:
+% \begin{lstlisting}
+% ssh aa274@<lowercase_robot_name>.local
+% \end{lstlisting}
+% with the password \texttt{aa274}. This remotely logs into the onboard robot computer. Now that we have all of the necessary packages, we can go ahead and run:
+% \begin{lstlisting}
+% roslaunch asl_turtlebot turtlebot3_bringup_jetson_pi.launch
+% \end{lstlisting}
+% {\bf NOTE:} Only one person has to do this on the robot, once this is running then everyone else will be able to see the data we're going to visualize next.
 
-\subsubsection{Off-Campus Students}
-Instead of ssh-ing into the robots, you'll be interfacing with TurtleBots in Gazebo on the workstation. Download TurboVNC (if you haven't already), connect to the Stanford VPN with your suid, and ask your TA for \texttt{genbu} login instructions.
+% \subsubsection{Off-Campus Students}
+% Instead of ssh-ing into the robots, you'll be interfacing with TurtleBots in Gazebo on the workstation. Download TurboVNC (if you haven't already), connect to the Stanford VPN with your suid, and ask your TA for \texttt{genbu} login instructions.
 
-Connect to the server with VNC. For example, if your group username is \texttt{group01} then you would connect to \texttt{genbu.stanford.edu:1}. Similarly, if it's \texttt{group13} then you would connect to \texttt{genbu.stanford.edu:13}
+% Connect to the server with VNC. For example, if your group username is \texttt{group01} then you would connect to \texttt{genbu.stanford.edu:1}. Similarly, if it's \texttt{group13} then you would connect to \texttt{genbu.stanford.edu:13}
 
-Once logged in, first update the \texttt{asl\_turtlebot} repository:
-\begin{lstlisting}
-cd ~/catkin_ws/src/asl_turtlebot
-git pull
-\end{lstlisting}
+% Once logged in, first update the \texttt{asl\_turtlebot} repository:
+% \begin{lstlisting}
+% cd ~/catkin_ws/src/asl_turtlebot
+% git pull
+% \end{lstlisting}
 
-Then start roscore:
+% Then start roscore:
+Start roscore:
 \begin{lstlisting}
 roscore -p $ROS_PORT
 \end{lstlisting}
@@ -156,17 +164,17 @@ roslaunch asl_turtlebot section4_demo.launch
 
 \subsection{Starting up \texttt{rviz}}
 
-\subsubsection{On-Campus Students}
+% \subsubsection{On-Campus Students}
 
-On your local machine, whether it be Windows + VM, Mac + Docker, Linux + Docker, or Linux, open a terminal and execute \texttt{rviz}.
+% On your local machine, whether it be Windows + VM, Mac + Docker, Linux + Docker, or Linux, open a terminal and execute \texttt{rviz}.
 
-{\bf NOTE:} If you are using Docker, then you will need to use the \texttt{display} flag here, since \texttt{rviz} uses a graphical user interface (GUI). Furthermore, because networking with the robot works differently in docker, we will have to pass in the name of the robot with the \texttt{rosmaster} flag. This also means we don't have to run the \texttt{rostb3.sh} script inside Docker. Specifically, from the \texttt{aa274-docker} directory, you'd run 
-\begin{lstlisting}
-./run.sh --display 1 --rosmaster <lowercase_robot_name>.local rviz
-\end{lstlisting}
-After this, connect to your Docker's display with TurboVNC (\texttt{localhost:1} if you used the same number above).
+% {\bf NOTE:} If you are using Docker, then you will need to use the \texttt{display} flag here, since \texttt{rviz} uses a graphical user interface (GUI). Furthermore, because networking with the robot works differently in docker, we will have to pass in the name of the robot with the \texttt{rosmaster} flag. This also means we don't have to run the \texttt{rostb3.sh} script inside Docker. Specifically, from the \texttt{aa274-docker} directory, you'd run 
+% \begin{lstlisting}
+% ./run.sh --display 1 --rosmaster <lowercase_robot_name>.local rviz
+% \end{lstlisting}
+% After this, connect to your Docker's display with TurboVNC (\texttt{localhost:1} if you used the same number above).
 
-\subsubsection{Off-Campus Students}
+% \subsubsection{Off-Campus Students}
 
 Open another terminal and execute \texttt{rviz}.
 
@@ -178,21 +186,21 @@ Now let's visualize some data!!
 
 \subsubsection{Point Cloud}
 
-\textbf{On-Campus Students: Velodyne's 3D Point Cloud}
+% \textbf{On-Campus Students: Velodyne's 3D Point Cloud}
 
-In \texttt{rviz}, to add a topic to the display, you need to click on the ``Add'' button on the bottom left. Once you've clicked this, a popup will come up. In the popup, click the ``By topic'' tab and scroll down until you see ``PointCloud2.'' Double-click this and watch the pretty colors appear.
+% In \texttt{rviz}, to add a topic to the display, you need to click on the ``Add'' button on the bottom left. Once you've clicked this, a popup will come up. In the popup, click the ``By topic'' tab and scroll down until you see ``PointCloud2.'' Double-click this and watch the pretty colors appear.
 
-\textbf{Off-Campus Students: Gazebo's Laser Scan}
+% \textbf{Off-Campus Students: Gazebo's Laser Scan}
 
 In \texttt{rviz}, to add a topic to the display, you need to click on the ``Add'' button on the bottom left. Once you've clicked this, a popup will come up. In the popup, click the ``By topic'' tab and scroll down until you see ``LaserScan`` under ``/scan``. Double-click this and watch the scanned points appear.
 
 \subsubsection{Camera Image}
 
-\textbf{On-Campus Students: Raspberry Pi Camera's Image}
+% \textbf{On-Campus Students: Raspberry Pi Camera's Image}
 
-Next, follow the same procedure, but this time expand ``/camera\_relay /image /compressed'' and double-click on Image. Wave your hand in front of the camera, this is what the Turtlebot sees in front of it.
+% Next, follow the same procedure, but this time expand ``/camera\_relay /image /compressed'' and double-click on Image. Wave your hand in front of the camera, this is what the Turtlebot sees in front of it.
 
-\textbf{Off-Campus Students: Gazebo's Camera Image}
+% \textbf{Off-Campus Students: Gazebo's Camera Image}
 
 Next, follow the same procedure, but this time expand ``/camera /image\_raw /compressed'' and double-click on Image. This is a rendered view of the camera attached to the Turtlebot in Gazebo.
 
@@ -213,11 +221,14 @@ Next, add ``Axes'' from under the ``By display type'' tab. This shows us where t
 
 Next, add ``TF'' from under the ``By display type'' tab. This shows us the axes origins and orientations of any other frames we've defined. You can see we've defined quite a few for this robot.
 
-{\bf Problem 2: Take a screenshot of your \texttt{rviz} display after all of the above are running. Feel free to wave to the camera to show it works in real time. If you're an SCPD student, teleop the robot (using \texttt{roslaunch turtlebot3\_teleop turtlebot3\_teleop\_key.launch}), to move it to a different place.}
+% {\bf Problem 2: Take a screenshot of your \texttt{rviz} display after all of the above are running. Feel free to wave to the camera to show it works in real time. If you're an SCPD student, teleop the robot (using \texttt{roslaunch turtlebot3\_teleop turtlebot3\_teleop\_key.launch}), to move it to a different place.}
+
+{\bf Problem 2: Take a screenshot of your \texttt{rviz} display after all of the above are running. Teleop the robot (using \texttt{roslaunch turtlebot3\_teleop turtlebot3\_teleop\_key.launch}) to move it to a different place and see your \texttt{rviz} display change.}
 
 \subsection{Saving \texttt{rviz}'s Current Configuration}
 
-That was quite a lot of topics to open, imagine doing that every time you wanted to debug your ROS stack! Thankfully, there's a way we can save this current configuration to a file and open it with \texttt{rviz}, using \texttt{File -> Save Config As}. Remember, only the \texttt{catkin\_ws} directory is mapped to your local filesystem, so please save your \texttt{.rviz} file in within \texttt{catkin\_ws} for future use.
+That was quite a lot of topics to open, imagine doing that every time you wanted to debug your ROS stack! Thankfully, there's a way we can save this current configuration to a file and open it with \texttt{rviz}, using \texttt{File -> Save Config As}. 
+% Remember, only the \texttt{catkin\_ws} directory is mapped to your local filesystem, so please save your \texttt{.rviz} file in within \texttt{catkin\_ws} for future use.
 
 {\bf Problem 3: Paste the contents of your created \texttt{.rviz} configuration file into your submission.}
 
@@ -230,5 +241,9 @@ Markers are a very helpful tool for visualizing intermediate rewards, computed t
 Code to create a Marker object can be found in the \texttt{code/} directory of today's section. Running it creates a green oblong sphere at world coordinates $(1, 1, 1)$, each in meters.
 
 {\bf Problem 4: Change the Marker to look like a normal red sphere and place it $1m$ in front of the robot (think about which axis this corresponds to), include a screenshot of your marker and its placement in your submission.}
+
+\section{Cleanup}
+
+This time, you do not have to remove any files (you'll want to leave the \texttt{velodyne} catkin package in your catkin workspace as well as keep your \texttt{.rviz} configuration file around). Further, we have noticed that some of you are fully removing your \texttt{catkin\_ws} between each section. While this was more or less inconsequential for the previous sections, from now on please \textbf{DO NOT} do this.
 
 \end{document}
