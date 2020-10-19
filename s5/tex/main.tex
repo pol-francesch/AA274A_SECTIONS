@@ -159,7 +159,7 @@ From a new terminal, open \texttt{rviz}.
 % ./run.sh --display 1 --rosmaster <lowercase_robot_name>.local rviz
 % \end{minted}
 
-Add relevant topics to the display - the main ones we'll need are \texttt{/map}, the TF transform tree, and the path topic \texttt{/cmd\_path}.
+Add relevant topics to the display - the main ones we'll need are \texttt{/map}, the TF transform tree, and the path topics \texttt{/planned\_path} and \texttt{/cmd\_smoothed\_path}.
 
 Create a new catkin package (like how we made one in Section 2) with the name \texttt{section5} and save the rviz configuration as \texttt{my\_nav.rviz} in \texttt{section5/rviz/my\_nav.rviz} on genbu.
 
