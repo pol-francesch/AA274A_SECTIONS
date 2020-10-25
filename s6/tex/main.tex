@@ -67,11 +67,16 @@ Our goals for this section:
 \end{enumerate}
 
 \section{Updating turtlebot software}
-You may notice that the turtlebots look a little different. We've changed the position of the velodyne to put more weight on the wheels to prevent them from slipping. We've also updated the launch file with the updated position of the velodyne. Let's first make sure your robot has the latest version of the launch file.
-
-As before, ssh into your turtlebot and run the following commands:
+Let's first make sure our \verb|asl_turtlebot| code is up to date. Navigate to the folder using either 
+\begin{minted}{bash}
+cd catkin_ws/src/asl_turtlebot
+\end{minted}
+or 
 \begin{minted}{bash}
 roscd asl_turtlebot
+\end{minted}
+and run:
+\begin{minted}{bash}
 git pull
 \end{minted}
 
@@ -100,9 +105,9 @@ Take a look at the
 \textbf{Problem 2: What command did you use to record the requested topics to a particular file name?}
 
 \section{Visualizing results with rqt}
-After recording the data, we can play it back and visualize it using a tool called \texttt{rqt\_plot}. First, disconnect from the robot and setup your computer to not use the robot as the ROS master by running \texttt{roslocal} instead of \texttt{rostb3} in your terminals.
+After recording the data, we can play it back and visualize it using a tool called \texttt{rqt\_plot}. 
 
-Now, in one terminal, start \texttt{roscore}. Then, in another terminal open \texttt{rqt\_plot} and add the three topics that we logged. Finally, in another terminal, use rosbag to playback the data you recorded. 
+In one terminal, start \texttt{roscore}. Then, in another terminal open \texttt{rqt\_plot} and add the three topics that we logged. Finally, in another terminal, use rosbag to playback the data you recorded. 
 
 \textbf{Problem 3: Take a screenshot of the resulting plot in \texttt{rqt\_plot} and include it in your submission.}
 
