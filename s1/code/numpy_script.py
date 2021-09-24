@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #This script will introduce us to Numpy, a library useful for working with n-dimensional data.
 import numpy as np

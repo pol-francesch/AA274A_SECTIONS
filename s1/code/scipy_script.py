@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #This script will introduce us to Scipy, a library useful for scientific computation
 #Adapted from https://docs.scipy.org/doc/scipy/reference/tutorial/integrate.html

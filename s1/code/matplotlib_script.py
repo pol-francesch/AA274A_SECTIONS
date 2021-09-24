@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #This script will introduce us to Matplotlib, a library used for visualization
 import numpy as np
