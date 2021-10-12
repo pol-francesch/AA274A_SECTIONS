@@ -1,0 +1,98 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[margin=1cm]{caption}
+\usepackage{subcaption}
+\usepackage{tcolorbox}
+\usepackage{color}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\definecolor{editorGray}{rgb}{0.95, 0.95, 0.95}
+
+
+\lstset{%
+    % Basic design
+    backgroundcolor=\color{editorGray},
+    basicstyle={\small\ttfamily},   
+    frame=l,
+    % Line numbers
+    xleftmargin={0.75cm},
+    numbers=left,
+    stepnumber=1,
+    firstnumber=1,
+    numberfirstline=false,
+    }
+\lstset{
+    literate={~} {$\sim$}{1}
+}
+
+\newenvironment{claim}[1]{\par\noindent\underline{Claim:}\space#1}{}
+\newenvironment{claimproof}[1]{\par\noindent\underline{Proof:}\space#1}{\hfill $\blacksquare$}
+
+\oddsidemargin 0in \evensidemargin 0in
+\topmargin -0.5in \headheight 0.25in \headsep 0.25in
+\textwidth 6.5in \textheight 9in
+\parskip 6pt \parindent 0in \footskip 20pt
+
+% set the header up
+\fancyhead{}
+\fancyhead[L]{Stanford Aeronautics \& Astronautics}
+\fancyhead[R]{Fall 2021}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand\headrulewidth{0.4pt}
+\setlength\headheight{15pt}
+
+\usepackage{outlines}
+
+\usepackage{xparse}
+\NewDocumentCommand{\codeword}{v}{%
+\texttt{\textcolor{blue}{#1}}%
+}
+\usepackage{gensymb}
+
+\newcommand{\ssmargin}[2]{{\color{blue}#1}{\marginpar{\color{blue}\raggedright\scriptsize [SS] #2 \par}}}
+
+
+\setlength{\parindent}{0in}
+
+\title{AA 274A: Principles of Robot Autonomy I \\ Section 3 (Virtual): Introduction to Turtlebot and Gazebo}
+\date{}
+
+\begin{document}
+
+\maketitle
+\pagestyle{fancy}
+
+Our goals for this section: \begin{enumerate}
+    % \item Become familiar with the Turtlebot hardware.
+    \item Gain a basic understanding of the Turtlebot software.
+    \item Use basic tools for interacting with the Turtlebot.
+\end{enumerate}
+
+% \input{sec_turtlebot_hw}
+
+% \input{sec_turtlebot_sw}
+
+\input{sec_turtlebot_sw_scpd}
+
+\input{sec_turtlebot_teleop_scpd}
+
+\section*{Cleanup}
+
+Towards the end of your section, when you're about to log out, please shut down all of your running processes (like roscore or any publishers/subscribers) and clean up your catkin workspaces for the next groups. In particular, commit and remove the code you wrote for the section as well as any catkin packages you created for the section within \texttt{catkin\_ws/src}.
+
+\end{document}
