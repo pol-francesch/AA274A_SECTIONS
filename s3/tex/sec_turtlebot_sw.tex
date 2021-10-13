@@ -33,6 +33,10 @@ We will now set up these scripts so it's easy to switch between them.
 	\item Connect to the correct network. (The TA will tell you which one it is.)
 	\item Edit \texttt{rostb3.sh} accordingly: define \texttt{TURTLEBOT\_NAME} at the start of the script.
 	\item Source \texttt{rostb3.sh}.
+	\begin{lstlisting}
+# run this command on the laptop
+source rostb3.sh
+	\end{lstlisting}
 	\item Open your \texttt{.bashrc} with a text editor. All the shell commands in this file will get run whenever you open a terminal.
 	Add the following lines to the end of the file:
 	\begin{lstlisting}
@@ -41,7 +45,7 @@ alias rostb3='source ~/catkin_ws/src/asl_turtlebot/rostb3.sh'
 alias roslocal='source ~/catkin_ws/src/asl_turtlebot/roslocal.sh'
 export TURTLEBOT3_MODEL=burger
 	\end{lstlisting}
-	
+	The \texttt{TURTLETBOT3\_MODEL} should remain \texttt{burger}, do not change this.
 	IMPORTANT: This will create an alias for rostb3 and roslocal. If roscore is to run on the TurtleBot, and you want to run nodes from your computer (not ssh), you must type rostb3 EVERY TIME you open a terminal window. Otherwise, if you want to run things locally on your machine, you should run roslocal.
 	\item For these modifications to take effect in the current terminal, run:
 	\begin{lstlisting}
@@ -56,7 +60,7 @@ Next, in a terminal window, ssh into the TurtleBot using:
 ssh aa274@<TurtleBot Name>.local
 \end{lstlisting}
 
-with the password \texttt{aa274}. This remotely logs into the onboard robot computer. The necessary ROS packages
+with the password \texttt{aa274}. You don't need the angle brackets ($<>$). This remotely logs into the onboard robot computer. The necessary ROS packages
 and drivers for TurtleBot operation have been pre-installed so we can go ahead and run:
 
 \begin{lstlisting}
