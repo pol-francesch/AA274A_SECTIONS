@@ -4,16 +4,30 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{bbm}
-\usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{listings}
 \usepackage{cite}
 \usepackage{graphicx}
-\usepackage[pdftex,colorlinks=true, urlcolor = blue]{hyperref}
-\usepackage[margin=3cm]{caption}
-\graphicspath{{../figs/}}
-\usepackage{float}
+\usepackage{enumitem}
+\usepackage[margin=1cm]{caption}
+\usepackage{subcaption}
+\usepackage{tcolorbox}
+\usepackage{color}
+\definecolor{editorGray}{rgb}{0.95, 0.95, 0.95}
 
+
+\lstset{%
+    % Basic design
+    backgroundcolor=\color{editorGray},
+    basicstyle={\small\ttfamily},   
+    frame=l,
+    % Line numbers
+    xleftmargin={0.75cm},
+    numbers=left,
+    stepnumber=1,
+    firstnumber=1,
+    numberfirstline=false,
+    }
 \lstset{
     literate={~} {$\sim$}{1}
 }
@@ -24,12 +38,10 @@
 \oddsidemargin 0in \evensidemargin 0in
 \topmargin -0.5in \headheight 0.25in \headsep 0.25in
 \textwidth 6.5in \textheight 9in
-\parskip 6pt \parindent 0in \footskip 20pt
-
 % set the header up
 \fancyhead{}
 \fancyhead[L]{Stanford University}
-\fancyhead[R]{Principles of Robot Autonomy I - Fall 2020}
+\fancyhead[R]{Principles of Robot Autonomy I - Fall 2021}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \renewcommand\headrulewidth{0.4pt}
@@ -100,25 +112,28 @@ You may have noticed that the code logic is similar to the strategy we used in H
 
 Copy over the following files to \texttt{asl\_turtlebot/scripts/controllers/}
 
-\begin{minted}{text}
+\begin{lstlisting}
 P2_pose_stabilization.py
 P3_trajectory_tracking.py
-\end{minted}
+\end{lstlisting}
 
 and the following from HW2 to \texttt{asl\_turtlebot/scripts/planners/}
 
-\begin{minted}{text}
+\begin{lstlisting}
 P1_astar.py
-\end{minted}
+\end{lstlisting}
+
 
 Also, edit \texttt{scripts/planners/path\_smoother.py} and copy over the function \texttt{compute\_smoothed\_traj} from HW2's \texttt{P3\_traj\_planning.py}.
 
 %\textbf{For SCPD students:} 
 If you need to, use the \texttt{scp} command to copy these files to genbu.
 
-\begin{minted}{bash}
+
+\begin{lstlisting}
+# You will need to fill in the '...' with the correct file path!
 scp <file> group##@genbu.stanford.edu:~/catkin_ws/src/asl_turtlebot/scripts/...
-\end{minted}
+\end{lstlisting}
 
 Now, we're ready to test the framework on the robot!
 
@@ -141,15 +156,16 @@ Now, we're ready to test the framework on the robot!
 % \subsection{SCPD Students}
 On genbu, run
 
-\begin{minted}{bash}
+\begin{lstlisting}
 roscore -p $ROS_PORT
-\end{minted}
+\end{lstlisting}
 
 Then, in a new terminal, run
 
-\begin{minted}{bash}
+\begin{lstlisting}
 roslaunch asl_turtlebot turtlebot3_nav_sim.launch
-\end{minted}
+\end{lstlisting}
+
 
 \section{Running the Navigator}
 
@@ -159,9 +175,11 @@ From a new terminal, open \texttt{rviz}.
 % ./run.sh --display 1 --rosmaster <lowercase_robot_name>.local rviz
 % \end{minted}
 
-Add relevant topics to the display - the main ones we'll need are \texttt{/map}, the TF transform tree, and the path topics \texttt{/planned\_path} and \texttt{/cmd\_smoothed\_path}.
+Add relevant topics to the display - the main ones we'll need are \texttt{/map}, the TF transform tree, and the path topics \texttt{/planned\_path} and \texttt{/cmd\_smoothed\_path}. The \texttt{/camera} topic will also allow you you see what the robot sees as it navigates through the maze.
 
 Create a new catkin package (like how we made one in Section 2) with the name \texttt{section5} and save the rviz configuration as \texttt{my\_nav.rviz} in \texttt{section5/rviz/my\_nav.rviz} on genbu.
+
+\textbf{Problem 3: What is the command to create a new package? (Hint: Take a look at Section 2's handout for a starting point). What do each of the arguments do? What modifications do you need to make for the \texttt{section5} package?}
 
 %into the package you made in section 2
 % \begin{minted}{text}
@@ -177,12 +195,17 @@ Create a new catkin package (like how we made one in Section 2) with the name \t
 Now you can specify goal poses using the ``2D Nav Goal'' button in rviz and clicking and dragging on the map. The robot should move towards the goal if your controllers work correctly!
 
 % \textbf{Problem 3: Test this out on the robot (or simulation). Include a screenshot of rviz as your robot navigates the map.}
-\textbf{Problem 3: Test this out. Include a screenshot of rviz as your robot navigates the map.}
+\textbf{Problem 4: Test this out. Include a screenshot of rviz as your robot navigates the map. }
 
 \section{Visualizing the goal position}
 Using what you learned in last section, write a new node that visualizes the current navigation target in rviz as a marker. Save this node in the \texttt{section5} package's \texttt{scripts} folder.
 
-\textbf{Problem 4: Include this code in your submission.}
+\textbf{Problem 5: Describe at a high level how your goal visualizer works. Some questions to get you started are: 
+\begin{itemize}
+    \item What topics should it subscribe to in order to stay up to date with the current navigation target?
+    \item What message type should it publish, and to what topic?
+\end{itemize} 
+Include this code in your submission.}
 
 \section{Custom Launch Files}
 It can be cumbersome to start all the nodes from scratch, and set up rviz every time we want to run the stack. To make this easier, create a launch file in your \texttt{section5} package which:
@@ -195,18 +218,24 @@ It can be cumbersome to start all the nodes from scratch, and set up rviz every 
 Hint: run \texttt{rviz --help} to see how to pass a configuration file into rviz.
 Use the ROS documentation and/or Google to find out how to pass arguments into nodes through a launch file.
 
+Take a look at the launch files in the \texttt{asl\_turtlebot} package. In particular, lines \texttt{75 - 78} of the \texttt{asl\_turtlebot project\_sim.launch} file also provide an example of starting each of these nodes. In addition, \texttt{turtlebot3\_nav.launch} provides a minimal example of a launch file.
+
 Once you've written your launch file, save it as
 
-\begin{minted}{text}
+
+\begin{lstlisting}
 ~/catkin_ws/src/section5/launch/my_nav.launch
-\end{minted}
+\end{lstlisting}
+
 
 Test it out by running
 
-\begin{minted}{bash}
-roslaunch section5 my_nav.launch
-\end{minted}
 
-\textbf{Problem 5: Include the contents of this launch file in your submission}
+\begin{lstlisting}
+roslaunch section5 my_nav.launch
+\end{lstlisting}
+
+
+\textbf{Problem 6: Describe the components included in your launch file. Did you use any of the \texttt{asl\_turtlebot} launch files as an example? If so, what changes did you make? Include the contents of this launch file in your submission}
 
 \end{document}
