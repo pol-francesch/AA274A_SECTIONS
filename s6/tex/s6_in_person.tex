@@ -1,0 +1,153 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[margin=1cm]{caption}
+\usepackage{subcaption}
+\usepackage{tcolorbox}
+\usepackage{color}
+\definecolor{editorGray}{rgb}{0.95, 0.95, 0.95}
+
+
+\lstset{%
+    % Basic design
+    backgroundcolor=\color{editorGray},
+    basicstyle={\small\ttfamily},   
+    frame=l,
+    % Line numbers
+    xleftmargin={0.75cm},
+    numbers=left,
+    stepnumber=1,
+    firstnumber=1,
+    numberfirstline=false,
+    }
+\lstset{
+    literate={~} {$\sim$}{1}
+}
+\newenvironment{claim}[1]{\par\noindent\underline{Claim:}\space#1}{}
+\newenvironment{claimproof}[1]{\par\noindent\underline{Proof:}\space#1}{\hfill $\blacksquare$}
+
+\oddsidemargin 0in \evensidemargin 0in
+\topmargin -0.5in \headheight 0.25in \headsep 0.25in
+\textwidth 6.5in \textheight 9in
+\parskip 6pt \parindent 0in \footskip 20pt
+
+% set the header up
+\fancyhead{}
+\fancyhead[L]{Stanford University}
+\fancyhead[R]{Principles of Robot Autonomy I - Fall 2021}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand\headrulewidth{0.4pt}
+\setlength\headheight{15pt}
+\input{preamble}
+
+\usepackage{outlines}
+
+\usepackage{gensymb}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
+\newcommand{\ssmargin}[2]{{\color{blue}#1}{\marginpar{\color{blue}\raggedright\scriptsize [SS] #2 \par}}}
+
+\newcommand{\x}{\mathbf{x}}
+
+\setlength{\parindent}{0in}
+
+\title{AA 274A: Principles of Robotic Autonomy I \\(in-person) Section 6: rosbags}
+\date{}
+
+\setlength{\textfloatsep}{10pt} % Change vertical space after algorithm block
+
+
+\begin{document}
+
+\maketitle
+\pagestyle{fancy}
+\vspace{-1.25cm}
+Our goals for this section: 
+\begin{enumerate}
+    \item Finish up the navigator from Section 5.
+    \item Learn how to use rosbags.
+\end{enumerate}
+
+% \section{Updating turtlebot software}
+% Let's first make sure our \verb|asl_turtlebot| code is up to date. Navigate to the folder using either 
+% \begin{minted}{bash}
+% cd catkin_ws/src/asl_turtlebot
+% \end{minted}
+% or 
+% \begin{minted}{bash}
+% roscd asl_turtlebot
+% \end{minted}
+% and run:
+% \begin{minted}{bash}
+% git pull
+% \end{minted}
+
+\section{Getting the navigator working}
+Before learning about \texttt{rosbag}, we will need to have a working navigator. If you did not finish the navigator during Section 5, take this opportunity to make sure that it is working. In particular, when you input a 2D Nav Goal in rviz, your turtlebot should plan and execute a trajectory to the goal.
+
+\section{rosbag}
+An important tool for debugging and programming with ROS is \texttt{rosbag}. This tool will allow you to record topic data from a running ROS system for later playback. The topic data will be accumulated in a bag file. In this section, we will use \texttt{rosbag} to record performance of the pose controller under different settings to help choose controller gains.
+
+First, edit \texttt{asl\_turtlebot/scripts/controllers/P2\_pose\_stabilization.py} to publish the computed $\alpha$, $\delta$, and $\rho$ values to the topics \texttt{/controller/alpha}, \texttt{/controller/delta}, and \texttt{/controller/rho} topics respectively. 
+
+\textbf{Problem 1: What message type did you choose for each of these messages? Include your updated code in your submission.}
+
+HINT: you'll need to add some imports to this file. Refer to other publishers you've written in the past!
+
+Next, your goal is to use record to record the $\alpha$, $\delta$, and $\rho$ values as your navigator runs on the robot. 
+Record multiple bags for different values of the controller gains (play with the gains passed in to the controllers inside \texttt{\_\_init\_\_()} in \texttt{navigator.py}).
+
+Take a look at the 
+\texttt{rosbag} tutorials and documentation to find the command to record a \texttt{rosbag}:
+\begin{itemize}
+    \item \url{http://wiki.ros.org/rosbag/Commandline}
+    \item \url{http://wiki.ros.org/rosbag/Tutorials/Recording\%20and\%20playing\%20back\%20data}
+\end{itemize}
+
+\textbf{Problem 2: What command did you use to record the requested topics to a particular file name?}
+
+After you are done, in the window  running \texttt{rosbag record} exit with a Ctrl-C. Now examine the contents of the directory ~/bagfiles. You should see a file with a name that begins with the year, date, and time and the suffix .bag. This is the bag file that contains all topics published by any node in the time that \texttt{rosbag record} was running.
+We can use the following command to examine what is recorded in the bagfile:
+\begin{lstlisting}
+rosbag info <your bagfile>
+\end{lstlisting}
+
+\textbf{Problem 3: Include the output of \texttt{rosbag info} in your write up.}
+\section{Visualizing results with rqt}
+After recording the data, we can play it back and visualize it using a tool called \texttt{rqt\_plot}. 
+
+In one terminal, from the \texttt{asl\_turtlebot} package, source \texttt{roslocal.sh} and start \texttt{roscore}:
+\begin{lstlisting}
+source roslocal.sh
+roscore
+\end{lstlisting}
+Then, in another terminal open \texttt{rqt\_plot}:
+\begin{lstlisting}
+rqt_plot
+\end{lstlisting}
+and add the three topics that we logged. 
+Finally, in another terminal, use rosbag to playback the data you recorded (take a look at the documentation for the command to playback a rosbag).
+
+\textbf{Problem 4: What happens when you run the command \texttt{source roslocal.sh}, compared to the command \texttt{source rostb3.sh}?}
+
+\textbf{Problem 5: What happens when you run the command \texttt{rosbag play}? Why do we need to start \texttt{roscore} before running \texttt{rosbag play}?}
+
+\textbf{Problem 6: Take a screenshot of the resulting plot in \texttt{rqt\_plot} and include it in your submission.}
+
+You may need to play with the x axis limits to get a nice looking plot.
+
+\textbf{Problem 7: If you have time, record and play back $\rho, \, \alpha, \, \delta$ for several controller gains. What differences do you see as you change each of the gains? Include the plots in your write up.}
+
+
+\end{document}
