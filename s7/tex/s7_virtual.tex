@@ -62,7 +62,7 @@
 
 \setlength{\parindent}{0in}
 
-\title{AA 274A: Principles of Robot Autonomy I \\ Section 7: ROS Parameters}
+\title{AA 274A: Principles of Robot Autonomy I \\ (in-person) Section 7: ROS Parameters}
 \date{}
 
 \begin{document}
@@ -75,7 +75,9 @@ Our goals for this section: \begin{enumerate}
     \item Learn how to dynamically reconfigure node parameters
     \item Work on any remaining bugs in your robot planners and controllers
 \end{enumerate}
-We have reorganized the \texttt{asl\_turtlebot} repository! Before starting this week's section be sure to git pull \texttt{asl\_turtlebot} and checkout the \texttt{noetic-devel} branch. If you have changed any files, you will want to \texttt{git stash} them before you pull the changes. You may have to copy over your homework code into the scripts folder again, and modify some input statements. Specifically,
+We have reorganized the \texttt{asl\_turtlebot} repository! Before starting this week's section be sure to git pull \texttt{asl\_turtlebot} and checkout the \texttt{noetic-devel} branch. 
+
+If you have changed any files, you will want to \texttt{git stash} them before you pull the changes. You may have to copy over your homework code into the scripts folder again, and modify some input statements. Specifically,
 \begin{enumerate}
     \item Copy \texttt{P2\_pose\_stabilization.py} to \texttt{asl\_turtlebot/scripts/controllers/} (HW1)
     \item Copy \texttt{P3\_trajectory\_tracking.py} to \texttt{asl\_turtlebot/scripts/controllers/} (HW1)
@@ -88,11 +90,17 @@ We have reorganized the \texttt{asl\_turtlebot} repository! Before starting this
 \section{Setting up and using ROS parameters}
 Often there are parameters that are useful across multiple nodes. Such parameters would ideally be shared between nodes to ensure that their values throughout your robot stack are in sync. Additionally, there may be parameters whose values depend on the situation the robot is being launched into, and thus it would not be ideal for them to be hardcoded and modified for each situation. These are some of the reasons for the ROS parameter server.
 
-Launch the robot stack using 
+On the robot (after ssh-ing into it), start the robot stack using 
 \begin{lstlisting}
-roslaunch asl_turtlebot project.launch
+roslaunch asl_turtlebot asl_turtlebot_core.launch
 \end{lstlisting}
-and try the following command:
+
+On your machine (after sourcing rostb3.sh), start the navigator and rviz using
+\begin{lstlisting}
+roslaunch asl_turtlebot section7.launch sim:=false
+\end{lstlisting}
+
+Next, try the following command:
 \begin{lstlisting}
 rosparam list
 \end{lstlisting}
@@ -100,9 +108,9 @@ rosparam list
 
 You will see that there are already a large number of parameters on the ROS parameter server. 
 
-\textbf{Problem 2: } Where exactly are those being set? Start from \texttt{project.launch} and trace back through all of the launch files that are called as a result. For each launch file, list a few rosparams that are set within the file or state that none are set in the file.
+\textbf{Problem 2: } Where exactly are those being set? Start from \texttt{section7.launch} and trace back through all of the launch files that are called as a result. For each launch file, list a few rosparams that are set within the file or state that none are set in the file.
 
-Open the \texttt{config/gmapping\_config.launch} file and you will see that most of the lines are actually setting parameters! Thus, the value of these is set in a launch file and different launch files could be written to initialize these parameters differently for a different task.
+Open the \texttt{launch/config/gmapping\_config.launch} file and you will see that most of the lines are actually setting parameters! Thus, the value of these is set in a launch file and different launch files could be written to initialize these parameters differently for a different task.
 
 We can also use \texttt{rosparam get} to see the current value of parameters from the terminal, providing another way to get information about the current state of your robot stack. 
 
@@ -112,11 +120,11 @@ We can also use \texttt{rosparam get} to see the current value of parameters fro
 
 Now let's give ROS params a try for our navigator node. The values for maximum rotational velocity of the robot are not navigator-specific, and thus they could conceivably be shared across nodes. 
 \begin{enumerate}
-    \item Modify the launch of the navigator node inside \texttt{project.launch}. Make it create parameters \texttt{v\_max} and \texttt{om\_max} within the navigator node namespace and give them the values listed in \texttt{navigator.py}. Take a look at the gmapping configuration launch file \texttt{config/gmapping\_config.launch} for an example of how to do this.
+    \item Modify the launch of the navigator node inside \texttt{section7.launch}. Make it create parameters \texttt{v\_max} and \texttt{om\_max} within the navigator node namespace and give them the values listed in \texttt{navigator.py}. Take a look at the gmapping configuration launch file \texttt{config/gmapping\_config.launch} for an example of how to do this.
     
     \textbf{Problem 4:} Include your code.
     
-    \item Next, modify \texttt{navigator.py} to get the value of these parameters from the ROS param server rather than hardcoding them in the script. Take a look at \texttt{supervisor.py} for an example of how to do this. Note the difference between \lstinline{self.rviz = rospy.get_param("rviz")} and \\ \lstinline{self.pos_eps = rospy.get_param("~pos_eps", 0.1)}.
+    \item Next, modify the script \texttt{navigator.py} to get the value of these parameters from the ROS param server rather than hardcoding them in the script. Take a look at \texttt{supervisor.py} for an example of how to do this. Note the difference between \lstinline{self.rviz = rospy.get_param("rviz")} and \\ \lstinline{self.pos_eps = rospy.get_param("~pos_eps", 0.1)}.
     
     \textbf{Problem 5:} Include your code.
 \end{enumerate}  
@@ -126,9 +134,9 @@ What if we have another task where we want to run the same stack but with the ro
 
 Open \texttt{root.launch} in \texttt{asl\_turtlebot} and you will notice that it is calling a \texttt{gazebo\_ros} launch file while passing in some arguments. It additionally has some arguments of its own with default values that could be \textit{overridden} if it is called by another launch file that passes in different values for those arguments. As robot stacks become more complex, you can imagine how crucial it is to be able to hierarchically call trees of launch files, using such arguments to repurpose each launch file and ultimately parameters and nodes for the task at hand.
 
-Now using \texttt{root.launch} as an example, modify \texttt{project.launch} again to use launch file arguments to set default values for the \texttt{v\_max} and \texttt{om\_max} parameters. Then create a second launch file \texttt{project\_slow.launch} which calls \texttt{project.launch} with max velocity values that are at half the speed.
+Now using \texttt{root.launch} as an example, modify \texttt{section7.launch} again to use launch file arguments to set default values for the \texttt{v\_max} and \texttt{om\_max} parameters. Then create a second launch file \texttt{section7\_slow.launch} which calls \texttt{section7.launch} with max velocity values that are at half the speed.
 
-{\bf Problem 6: Test these launch files with your robot sim and paste the contents of your \texttt{project.launch} and \texttt{project\_slow.launch} files into your submission.}
+{\bf Problem 6: Test these launch files with your robot sim and paste the contents of your \texttt{section7.launch} and \texttt{section7\_slow.launch} files into your submission.}
 
 \section{Dynamically reconfiguring node parameters}
 ROS params give a great way to synchronize parameters across your stack on node startup, but what if you want to modify parameters while your nodes are running? There is a \texttt{ros param set} command, but if your nodes only use ROS params to initialize internal node variables and don't continue checking them, updating the ROS params during operation won't result in any changes.
