@@ -162,7 +162,7 @@ rosrun rqt_reconfigure rqt_reconfigure
 This will provide an extremely convenient interface for changing your robot's parameters on the fly! Give it a try on the pose controller gains.
 
 \subsection{Setting up dynamic parameters}
-Now let's try extending this to more parameters in our navigator. Unlike normal ROS params, dynamic parameters are created in special \texttt{cfg} files. You can find one for the navigator at \\ \texttt{asl\_turtlebot/cfg/navigator.cfg}. Check the \texttt{dynamic\_reconfigure} tutorials to see what the arguments in the \texttt{gen.add} function mean. Check the \texttt{dyn\_cfg\_callback()} function in \texttt{navigator.py}. Now, add a dynamic parameter for any one parameter from \texttt{navigator.py} --- this could be the trajectory smoothing parameter, the desired velocity, or anything else that you would like to change on the fly! 
+Now let's try extending this to more parameters in our navigator. Unlike normal ROS params, dynamic parameters are created in special \texttt{cfg} files. You can find one for the navigator at \\ \texttt{asl\_turtlebot/cfg/navigator.cfg}. Check the \texttt{dynamic\_reconfigure} tutorials to see what the arguments in the \texttt{gen.add} function mean. Check the \texttt{dyn\_cfg\_callback()} function in \texttt{navigator.py}. Now, add a dynamic parameter for any one parameter from \texttt{navigator.py} --- this could be the trajectory smoothing parameter, the desired velocity, or anything else that you would like to change on the fly! Make sure to do a \texttt{catkin build} once you've completed these changes.
 
 {\bf Problem 7: Test this on your robot sim and paste the contents of your \texttt{navigator.cfg} and \texttt{navigator.py} files into your submission.}
 % \newpage
