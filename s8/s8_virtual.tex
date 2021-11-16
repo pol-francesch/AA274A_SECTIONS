@@ -1,0 +1,133 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[margin=1cm]{caption}
+\usepackage{subcaption}
+\usepackage{tcolorbox}
+\usepackage{color}
+\definecolor{editorGray}{rgb}{0.95, 0.95, 0.95}
+\usepackage{hyperref}
+
+\lstset{%
+    % Basic design
+    backgroundcolor=\color{editorGray},
+    basicstyle={\small\ttfamily},   
+    frame=l,
+    % Line numbers
+    xleftmargin={0.75cm},
+    numbers=left,
+    stepnumber=1,
+    firstnumber=1,
+    numberfirstline=false,
+    }
+\lstset{
+    literate={~} {$\sim$}{1}
+}
+
+\newenvironment{claim}[1]{\par\noindent\underline{Claim:}\space#1}{}
+\newenvironment{claimproof}[1]{\par\noindent\underline{Proof:}\space#1}{\hfill $\blacksquare$}
+
+\oddsidemargin 0in \evensidemargin 0in
+\topmargin -0.5in \headheight 0.25in \headsep 0.25in
+\textwidth 6.5in \textheight 9in
+\parskip 6pt \parindent 0in \footskip 20pt
+
+% set the header up
+\fancyhead{}
+\fancyhead[L]{Stanford Aeronautics \& Astronautics}
+\fancyhead[R]{Fall 2021}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand\headrulewidth{0.4pt}
+\setlength\headheight{15pt}
+
+\usepackage{outlines}
+
+\usepackage{xparse}
+\NewDocumentCommand{\codeword}{v}{%
+\texttt{\textcolor{blue}{#1}}%
+}
+\usepackage{gensymb}
+
+\newcommand{\ssmargin}[2]{{\color{blue}#1}{\marginpar{\color{blue}\raggedright\scriptsize [SS] #2 \par}}}
+
+
+\setlength{\parindent}{0in}
+
+\title{AA 274A: Principles of Robot Autonomy I \\ Section 8: Assembling an Autonomy Stack\\
+Case Study: Multiplexing}
+\date{}
+
+\begin{document}
+
+\maketitle
+\pagestyle{fancy}
+
+
+
+
+\section{Multiplexing}
+Multiplexing is the idea of easily switching between different inputs in a software stack. In robotics, this is extremely useful to quickly switch between different sensors if one is faulty\footnote{See for example \url{https://arxiv.org/pdf/2008.09679.pdf} and \url{https://player.vimeo.com/video/458021911?autoplay=1}.} or becomes imprecise in challenging environmental conditions (e.g., a drone could stop using its  camera if it enters a dark room, and rely on its inertial measurement unit (IMU) instead\footnote{See for example \url{https://arxiv.org/pdf/1909.00079.pdf}.}). Multiplexers are also widely used to switch between different controllers for different terrain\footnote{See for example \url{https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9172739}.} or robot operating modes (for instance, a drone may switch to an emergency controller if one motor is faulty)\footnote{See for example \url{https://www.youtube.com/watch?v=P3fM6VwXXFM}.}.
+
+In this section, you will write a multiplexer to quickly switches between different controllers. \textbf{There are multiple approaches to do this, so this section is open-ended}. 
+The goal of today's section is to use multiplexing to put together everything you have learned in previous sections.
+
+We propose two different approaches:
+\begin{itemize}
+    \item Listen to a topic where information about the desired controller (e.g., its name) is published.
+    \item Update a ROS parameter in real time.
+\end{itemize}
+
+To start, launch the default robot stack as we've done in previous sections:
+\begin{lstlisting}
+roslaunch asl_turtlebot project.launch
+\end{lstlisting}
+
+\textbf{Problem 1: } To which topic are the robot's control input sent to? \textbf{Hint}: use the commands \texttt{rostopic list}, \texttt{rosnode list}, \texttt{rosnode info}, and \texttt{rqt\_graph}. What node is currently publishing these control inputs? In your writeup, include the commands that you run to check this, and their output.
+
+\textbf{Problem 2: } What command would you use to control the robot using your keyboard? 
+
+A complex control stack may fail when facing new unexpected situations. Thus, it is often a good idea to be able to quickly switch to a backup controller, which is also useful for debugging. In this section, the backup controller will be teleoperated, such that you can control the robot from your keyboard. 
+
+\textbf{Problem 3: } Propose a method to efficiently switch from the controller used in the previous section (i.e. with the navigator) to the teleoperated controller. Different methods are possible.
+\textbf{Hint}: One method is to write a node that subscribes to both control topics (one from \texttt{navigator.py}, and one from the teleop controller) and publishes to the topic with the control inputs that are sent to the robot.
+
+\textbf{Problem 4: } Implement your idea. For now, you can choose which controller is in charge by hard-coding some parameter. The rest of this section will look at different ways to switch between controllers. Make sure that control commands are only published to the robot from one source.
+
+\textbf{Problem 5 : } Write a launch file that starts both the main software stack (\texttt{project.launch}) and your backup keyboard controller. 
+
+\subsection{Changing your parameter in real-time using topics}
+One way to switch between controllers is by using ROS topics.
+
+\textbf{Problem 6: } Make it possible to switch between controllers by publishing a message to a ROS topic. Test this out on the command line by using
+\begin{lstlisting}
+rostopic pub <topic-name> <msg-type> [data...]
+\end{lstlisting}
+
+\subsection{Changing your parameter in real-time with a ROS parameter}
+It may sometimes be more convenient to select the desired controller by changing it using a ROS parameter.
+
+\textbf{Problem 7}: Make the parameter that enables switching between controllers available as a ROS parameter. It should be visible when running the command \texttt{rosparam list} and can be set using the \texttt{rosparam set} command.
+
+\subsection{(Optional, if you have time) Changing your parameter from a GUI}
+It may be more convenient to change it from a graphical user interface. 
+
+\textbf{Problem 8}: Using the content from the previous section, make this parameter reconfigurable in real time using the package 
+\texttt{dynamic\_reconfigure}. Paste a screenshot of your graphical user interface with the visible parameter into your submission.
+
+\section{Final project}
+Use the remaining time in the section to start planning out your final project. Discuss with your section group (yes, your section group, even if it is not the same as your final project group), possible plans for organizing the high-level behavior of your robot. 
+After each of your final project group members have completed section this week, consolidate your ideas into a plan for your final project. You will hand in this plan in a separate Gradescope assignment from the Section 8 assignment. 
+How you write up this plan is open-ended, however it should be detailed and specific. For example, if you plan on implementing a ``delivery" module, your plan could be an FSM detailing how your robot switches between different states in the delivery process.
+Additionally, briefly describe the extensions you plan on implementing in your write-up.
+
+
+\end{document}
