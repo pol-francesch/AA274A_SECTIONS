@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
-from aa274_s2.msg import MyMessage
+from aa274a_s2.msg import MyMessage
 
 def callback(data):
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
