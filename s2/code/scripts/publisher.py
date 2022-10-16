@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
-from aa274_s2.msg import MyMessage
+from aa274a_s2.msg import MyMessage
 
 def publisher():
     pub = rospy.Publisher('my_topic', MyMessage, queue_size=10)
@@ -17,4 +17,4 @@ if __name__ == '__main__':
         publisher()
     except rospy.ROSInterruptException:
         pass
- 
+

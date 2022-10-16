@@ -98,16 +98,16 @@ The core build system used by ROS is called Catkin. When working with C code, we
 All of the code we write will be located inside of a catkin workspace. To create a new package for our code, run the following from within the \texttt{catkin\_ws/src} directory:
 
 \begin{lstlisting}
-catkin_create_pkg aa274_s2 std_msgs rospy message_generation
+catkin_create_pkg aa274a_s2 std_msgs rospy message_generation
 \end{lstlisting}
 % # In Docker, the easiest way to do this would be to first get a shell with 
 % # ./run.sh bash 
 % # and then cd to the src directory, followed by running the 
 % # catkin_create_pkg ... command.
 
-This will create a new package called \texttt{aa274\_s2} in the \texttt{src} folder. The last three arguments are library dependencies that this package will require to run.
+This will create a new package called \texttt{aa274a\_s2} in the \texttt{src} folder. The last three arguments are library dependencies that this package will require to run.
 
-Now change into the \texttt{aa274\_s2} directory. You will see that there are three items in it: \texttt{CMakeLists.txt}, \texttt{package.xml}, and an empty \texttt{src} folder. Go ahead and copy the scripts folder and the msg folder from the section code into \texttt{aa274\_s2}. Leave the \texttt{src} folder empty.
+Now change into the \texttt{aa274a\_s2} directory. You will see that there are three items in it: \texttt{CMakeLists.txt}, \texttt{package.xml}, and an empty \texttt{src} folder. Go ahead and copy the scripts folder and the msg folder from the section code into \texttt{aa274a\_s2}. Leave the \texttt{src} folder empty.
 
 % If you're using Docker, remember that you can change files as normal (without Docker) under the \texttt{catkin\_ws} folder, since they are mapped to the Docker container during use. Now, let's take a few minutes to inspect those first two files.
 
@@ -155,8 +155,8 @@ python3 subscriber.py
 Or, you can run your script from anywhere using the \texttt{rosrun} command:
 
 \begin{lstlisting}
-rosrun aa274_s2 publisher.py
-rosrun aa274_s2 subscriber.py
+rosrun aa274a_s2 publisher.py
+rosrun aa274a_s2 subscriber.py
 \end{lstlisting}
 The advantage of this second method is that it allows you to run your script from anywhere on your system, while the first method requires you to know the full path to the script.
 
@@ -238,6 +238,6 @@ Include these in your writeup.}
 
 \subsection{Cleanup}
 
-Towards the end of your section, when you're about to log out, please shut down all of your running processes (like roscore or any publishers/subscribers) and clean up your catkin workspaces for the next groups. In particular, remove the code you wrote for the section as well as any catkin packages you created for the section (as in, remove the \texttt{aa274\_s2} directory within \texttt{catkin\_ws/src}). 
+Towards the end of your section, when you're about to log out, please shut down all of your running processes (like roscore or any publishers/subscribers) and clean up your catkin workspaces for the next groups. In particular, remove the code you wrote for the section as well as any catkin packages you created for the section (as in, remove the \texttt{aa274a\_s2} directory within \texttt{catkin\_ws/src}). 
 
 This server is a shared resource and should be treated as one!

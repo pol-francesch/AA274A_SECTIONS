@@ -6,24 +6,25 @@ Because a full ROS software stack (with simulation and visualization) can be com
 % Please note that to interact with your robots later on, you'll need to have a local machine with ROS on it (the workstation is on a different network). Otherwise, if the homework only requires Python then you should use your local machines and/or Stanford FarmShare machines.
 
 \subsection*{Group Accounts}
-There are 30 group accounts on the machine. They are named \texttt{group01} to \texttt{group30}, each identically set up with ROS and all its dependencies.
+There are 50 group accounts on the machine. They are named \texttt{group01} to \texttt{group50}, each identically set up with ROS and all its dependencies.
 % (30 because we will support 30 final project groups because we have 30 robots)
 
-To access the workstation, install TurboVNC.\\
-\emph{Mac users:} You may have to install \href{https://www.oracle.com/java/technologies/javase-jdk15-downloads.html}{Oracle JDK} if you run into a JRE error.\\
-\emph{Mac users:} If TurboVNC does not open because it's downloaded from SourceForge:
-Ctrl + Two-finger click on the file, while holding control, press "Open" and the "Open" button should now be available. You will probably need to do this again with the ".pkg" file that follows.
+To access the workstation, install a remote desktop client.\\
+\emph{Windows users:} Install TurboVNC.\\
+\emph{Mac users:} Install TurboVNC. You may have to install \href{https://www.oracle.com/java/technologies/javase-jdk15-downloads.html}{Oracle JDK} if you run into a JRE error. If TurboVNC does not open because it's downloaded from SourceForge:
+Ctrl + Two-finger click on the file, while holding control, press "Open" and the "Open" button should now be available. You will probably need to do this again with the ".pkg" file that follows.\\
+\emph{Linux users:} Install Remmina.
 
 
-To connect to the workstation, open up TurboVNC and connect to the server
+To connect to the workstation, open up TurboVNC or Remmina and connect to the server
 \begin{lstlisting}
 genbu.stanford.edu:{account #}
 \end{lstlisting}
 If you're working remotely, then you'll have to install \href{https://uit.stanford.edu/service/vpn}{Stanford VPN} first.
-The TA will assign each group an account number from \texttt{01} to \texttt{30} and provide the corresponding password.
+The TA will assign each group an account number from \texttt{01} to \texttt{50} and provide the corresponding password.
 
 \subsection*{Interfacing}
-Below are several useful commands you'll use to either interface with the workstation or directly use it.
+Below are several useful commands you can use to interface with the workstation from a terminal on your computer.
 \begin{enumerate}
     \item \texttt{ssh} - Use this command to access the server (note, TurboVNC is by far the primary way to interface with the server)
 	\item \texttt{htop} - Use this command to see what processes are currently running
@@ -41,4 +42,4 @@ Below are several useful commands you'll use to either interface with the workst
 \end{enumerate}
 Include these in your writeup.}
 
-Note that genbu may look like it only has a terminal, but you can type in \texttt{firefox} to bring up a browser. You can also install IDEs like Visual Studio Code and bring it up using \texttt{code}. \footnote{For later reference, you can install VS Code without sudo privileges by following  \href{https://huhuidong.wordpress.com/2018/12/13/how-to-install-visual-studio-code-in-linux-without-root-or-sudo/}{instructions here.} }
+Note that Genbu may look like it only has a terminal, but you can type in \texttt{firefox} to bring up a browser. You can also install IDEs like Visual Studio Code and bring it up using \texttt{code}. \footnote{For later reference, you can install VS Code without sudo privileges by following  \href{https://huhuidong.wordpress.com/2018/12/13/how-to-install-visual-studio-code-in-linux-without-root-or-sudo/}{instructions here.} }
