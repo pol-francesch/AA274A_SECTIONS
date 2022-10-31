@@ -109,12 +109,17 @@ git pull
 git clone https://github.com/ros-drivers/velodyne.git
 \end{lstlisting}
 
+{\bf Update \texttt{asl\_turtlebot}:} Before we build our workspace, make sure the {\tt asl\_turtlebot} repository is up-to-date.
+\begin{lstlisting}
+cd asl_turtlebot && git pull
+\end{lstlisting}
+
 {\bf Build the package:}
 Once the package has finished cloning/pulling, we need to rebuild our catkin workspace. Recall, we can do this as follows
 \begin{lstlisting}
 # Run this command on the robot
-cd .. # We want to be within the catkin_ws directory
-catkin_make
+cd ~/catkin_ws # We want to be within the catkin_ws directory
+catkin build
 \end{lstlisting}
 
 This will take some time, so leave it alone until it's fully finished. Once it completes successfully, rejoice! You now have the necessary packages to move on.
@@ -128,14 +133,14 @@ This will take some time, so leave it alone until it's fully finished. Once it c
 Next, in a terminal window, ssh into the TurtleBot. Now that we have all of the necessary packages, we can go ahead and run:
 \begin{lstlisting}
 # Run this command on the robot
-roslaunch asl_turtlebot turtlebot3_bringup_jetson_pi.launch
+roslaunch asl_turtlebot asl_turtlebot_core.launch
 \end{lstlisting}
 
 {\bf Problem 1: Once this is all running, which rostopics are available? You can run \texttt{rostopic list} from a new terminal window on the laptop, but remember to run \texttt{rostb3} in every terminal window you open. Paste the list of topics in your submission.}
 
 \subsection{Starting up \texttt{rviz}}
 
-Open another terminal (remember to run \textt{rostb3}) and execute 
+Open another terminal (remember to run \texttt{rostb3}) and execute 
 \begin{lstlisting}
 # Run this on the laptop
 rviz
@@ -147,9 +152,11 @@ Now let's visualize some data!!
 
 In \texttt{rviz}, to add a topic to the display, you need to click on the ``Add'' button on the bottom left. Once you've clicked this, a popup will come up. In the popup, click the ``By topic'' tab and scroll down until you see ``PointCloud2.'' Double-click this and watch the pretty colors appear.
 
-\subsubsection{Raspberry Pi Camera Image}
+{\bf Note:} Use the throttled channel if you are seeing large network latency.
 
-Next, follow the same procedure, but this time expand ``/camera\_relay /image /compressed'' and double-click on Image. Wave your hand in front of the camera, this is what the Turtlebot sees in front of it.
+% \subsubsection{Raspberry Pi Camera Image}
+
+% Next, follow the same procedure, but this time expand ``/camera\_relay /image /compressed'' and double-click on Image. Wave your hand in front of the camera, this is what the Turtlebot sees in front of it.
 
 \subsubsection{\texttt{gmapping}'s Environment Map}
 
@@ -168,7 +175,7 @@ Next, add ``Axes'' from under the ``By display type'' tab (not ``By topic''). Th
 
 Next, add ``TF'' from under the ``By display type'' tab. This shows us the axes origins and orientations of any other frames we've defined. You can see we've defined quite a few for this robot (you may have to zoom in to read them).
 
-{\bf Problem 2: Take a screenshot of your \texttt{rviz} display after all of the above are running. Feel free to wave to the camera to show it works in real time.}
+{\bf Problem 2: Take a screenshot of your \texttt{rviz} display after all of the above are running. Feel free to wave to the Lidar to show it works in real time.}
 
 \subsection{Saving \texttt{rviz}'s Current Configuration}
 
@@ -186,6 +193,8 @@ Markers are a very helpful tool for visualizing intermediate rewards, computed t
 Code to create a Marker object can be found in the \texttt{code/} directory of today's section. Running it creates a green oblong sphere at world coordinates $(1, 1, 1)$, each in meters.
 
 {\bf Problem 4: Change the Marker to look like a normal red sphere and place it $1m$ in front of the robot (think about which axis this corresponds to), include a screenshot of your marker and its placement in your submission.}
+
+\textbf{Hint:} Thinking about changing the \texttt{frame\_id} of the marker to make it relative to a moving frame (\texttt{base\_footprint}) attached to the robot, and the position coordinates for this marker is just (1, 0, 0).
 
 \section{Cleanup}
 

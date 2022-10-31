@@ -123,17 +123,16 @@ and the following from HW2 to \texttt{asl\_turtlebot/scripts/planners/}
 P1_astar.py
 \end{lstlisting}
 
+You will also need to make some small modification to {\tt P1\_astar.py}. Find and replace the initialization of two variables as following, and test it locally(on your own computer, with \texttt{resolution = 0.1}) to make sure it is working as expected.
+
+\begin{lstlisting}
+self.est_cost_through = {}
+self.cost_to_arrive = {}
+\end{lstlisting}
 
 Also, edit \texttt{scripts/planners/path\_smoother.py} and copy over the function \texttt{compute\_smoothed\_traj} from HW2's \texttt{P3\_traj\_planning.py}.
 
 %\textbf{For SCPD students:} 
-If you need to, use the \texttt{scp} command to copy these files to genbu.
-
-
-\begin{lstlisting}
-# You will need to fill in the '...' with the correct file path!
-scp <file> group##@genbu.stanford.edu:~/catkin_ws/src/asl_turtlebot/scripts/...
-\end{lstlisting}
 
 Now, we're ready to test the framework on the robot!
 
@@ -163,7 +162,7 @@ roscore -p $ROS_PORT
 Then, in a new terminal, run
 
 \begin{lstlisting}
-roslaunch asl_turtlebot turtlebot3_nav_sim.launch
+roslaunch asl_turtlebot section5.launch
 \end{lstlisting}
 
 
@@ -218,7 +217,7 @@ It can be cumbersome to start all the nodes from scratch, and set up rviz every 
 Hint: run \texttt{rviz --help} to see how to pass a configuration file into rviz.
 Use the ROS documentation and/or Google to find out how to pass arguments into nodes through a launch file.
 
-Take a look at the launch files in the \texttt{asl\_turtlebot} package. In particular, lines \texttt{75 - 78} of the \texttt{asl\_turtlebot project\_sim.launch} file also provide an example of starting each of these nodes. In addition, \texttt{turtlebot3\_nav.launch} provides a minimal example of a launch file.
+Take a look at the launch files in the \texttt{asl\_turtlebot} package. In particular, lines \texttt{5 - 8} of the \texttt{asl\_turtlebot asl\_turtlebot\_core.launch} file also provide an example of starting each of these nodes and it also provides a minimal example of a launch file.
 
 Once you've written your launch file, save it as
 
