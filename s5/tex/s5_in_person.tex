@@ -81,6 +81,13 @@ Our goals for this section:
 
 \section{Point to point motion around obstacles}
 % As you saw in the last section, one of the nodes that the \texttt{turtlebot3\_bringup\_jetson\_pi} launch file starts is \texttt{gmapping}, which uses the LIDAR readings to perform SLAM (simultaneous localization and mapping), giving us an \textit{occupancy grid} map of the environment around the robot, as well as an estimate of the robots position within this map.\footnote{We'll be covering SLAM in class next week and learning how gmapping is able to do this, but for now it's fine to think of it as magic.}
+Before starting this section, please pull and clean the \texttt{~/catkin\_ws/src/asl\_turtlebot} repository in BOTH computer and robot:
+\begin{lstlisting}
+git pull
+git reset --hard
+git clean -fdx
+\end{lstlisting}
+
 As you saw in the last section, one of the nodes that the section launch file started was \texttt{gmapping}, which uses LIDAR readings to perform simultaneous localization and mapping (SLAM), giving us an \textit{occupancy grid} map of the environment around the robot, as well as an estimate of the robots position within this map.\footnote{We'll be covering SLAM in class next week and learning how gmapping is able to do this, but for now it's fine to think of it as magic.}
 
 A key ability of autonomous agents is the ability to navigate from point to point in the presence of obstacles. Today we'll be implementing a navigator ROS node and testing this functionality on the turtlebots!
@@ -109,6 +116,8 @@ The navigator uses a state machine to switch between different modes of operatio
 \textbf{Problem 2: Describe what each mode of the state machine does, and intuitively when the node switches between modes.}
 
 You may have noticed that the code logic is similar to the strategy we used in HW2: planning around obstacles using A*, and using a combination of the pose controller and tracking controller to track the planned path. In fact, this code calls functions that you wrote in your previous homeworks. 
+\\
+\textbf{NOTE}: The navigator node can be run from the robot \textit{or} from the aa274 laptop(preferred). Choose which device will be running the navigator, and copy files over accordingly.
 
 Copy over the following files to \texttt{asl\_turtlebot/scripts/controllers/}
 
@@ -123,16 +132,22 @@ and the following from HW2 to \texttt{asl\_turtlebot/scripts/planners/}
 P1_astar.py
 \end{lstlisting}
 
+You will also need to make some small modification to {\tt P1\_astar.py}. Find and replace the initialization of two variables as following, and test it locally(on your own computer, with \texttt{resolution = 0.1}) to make sure it is working as expected.
+
+\begin{lstlisting}
+self.est_cost_through = {}
+self.cost_to_arrive = {}
+\end{lstlisting}
 
 Also, edit \texttt{scripts/planners/path\_smoother.py} and copy over the function \texttt{compute\_smoothed\_traj} from HW2's \texttt{P3\_traj\_planning.py}.
 
 %\textbf{For SCPD students:} 
-If you need to, use the \texttt{scp} command to copy these files to the robot.
+If you need to, use the \texttt{scp} command to copy these files to the robot. An alternative is to use VScode Remote extension to log into robot and modify it directly on robot.
 
 
 \begin{lstlisting}
-# You will need to fill in the '...' with the correct file path!
-# Below, you need replace "henry" with the name of your robot!
+# Below, you need replace "henry" with the name of your robot 
+# and fill in the '...' with the correct file path!
 scp <file> aa274@henry.local:~/catkin_ws/src/asl_turtlebot/scripts/...
 \end{lstlisting}
 
@@ -155,19 +170,17 @@ Now, we're ready to test the framework on the robot!
 % Again, only one navigator should be running per robot, so take turns to test your code!
 
 % \subsection{SCPD Students}
-On the robot (after ssh-ing in the robot), run
+On the robot (i.e. after ssh-ing in the robot), run
 
 \begin{lstlisting}
-roslaunch asl_turtlebot turtlebot3_bringup_jetson_pi.launch
+roslaunch asl_turtlebot asl_turtlebot_core.launch
 \end{lstlisting}
 
-Then, in a new terminal (after running source ./rostb3.sh to make sure your laptop can communicate with the robot), run
+Then, in a new terminal (after running \texttt{rostb3} or ssh-ing into the robot, depending on where you've copied your navigator code), run
 
 \begin{lstlisting}
-roslaunch asl_turtlebot turtlebot3_nav.launch
+rosrun asl_turtlebot navigator.py
 \end{lstlisting}
-
-\textbf{Note:} make sure that the repo \texttt{asl\_turtlebot} is in the \texttt{noetic-devel} branch! To do so, run \texttt{git branch} to check which branch the repo is based on, and run \texttt{git checkout noetic-devel} to switch to the noetic branch. To build your packages in the catkin workspace, run \texttt{catkin build}.
 
 \section{Running the Navigator}
 
@@ -177,7 +190,8 @@ From a new terminal, open \texttt{rviz}.
 % ./run.sh --display 1 --rosmaster <lowercase_robot_name>.local rviz
 % \end{minted}
 
-Add relevant topics to the display - the main ones we'll need are \texttt{/map}, the TF transform tree, and the path topics \texttt{/planned\_path} and \texttt{/cmd\_smoothed\_path}. The \texttt{/camera} topic will also allow you you see what the robot sees as it navigates through the maze.
+Add relevant topics to the display - the main ones we'll need are \texttt{/map}, the TF transform tree, and the path topics \texttt{/planned\_path} and \texttt{/cmd\_smoothed\_path}. 
+%The \texttt{/camera} topic will also allow you you see what the robot sees as it navigates through the maze.
 
 Create a new catkin package (like how we made one in Section 2) with the name \texttt{section5} and save the rviz configuration as \texttt{my\_nav.rviz} in \texttt{section5/rviz/my\_nav.rviz}.
 
@@ -220,7 +234,7 @@ It can be cumbersome to start all the nodes from scratch, and set up rviz every 
 Hint: run \texttt{rviz --help} to see how to pass a configuration file into rviz.
 Use the ROS documentation and/or Google to find out how to pass arguments into nodes through a launch file.
 
-Take a look at the launch files in the \texttt{asl\_turtlebot} package. In particular, lines \texttt{75 - 78} of the \texttt{asl\_turtlebot project\_sim.launch} file also provide an example of starting each of these nodes. In addition, \texttt{turtlebot3\_nav.launch} provides a minimal example of a launch file.
+Take a look at the launch files in the \texttt{asl\_turtlebot} package. In particular, lines \texttt{5 - 8} of the \texttt{asl\_turtlebot asl\_turtlebot\_core.launch} file also provide an example of starting each of these nodes and it also provides a minimal example of a launch file.
 
 Once you've written your launch file, save it as
 

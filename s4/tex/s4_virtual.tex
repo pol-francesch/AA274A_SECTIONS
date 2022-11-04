@@ -112,10 +112,15 @@ git pull
 git clone https://github.com/ros-drivers/velodyne.git
 \end{lstlisting}
 
+{\bf Update \texttt{asl\_turtlebot}:} Before we build our workspace, make sure the {\tt asl\_turtlebot} repository is up-to-date.
+\begin{lstlisting}
+cd asl_turtlebot && git pull
+\end{lstlisting}
+
 {\bf Build the package:}
 Once the package has finished cloning/pulling, we need to rebuild our catkin workspace. Recall, we can do this as follows
 \begin{lstlisting}
-cd .. # We want to be within the catkin_ws directory
+cd ~/catkin_ws # We want to be within the catkin_ws directory
 catkin_make
 \end{lstlisting}
 
@@ -158,7 +163,7 @@ roscore -p $ROS_PORT
 
 In a new terminal tab or window, run the Gazebo environment:
 \begin{lstlisting}
-roslaunch asl_turtlebot section4_demo.launch
+roslaunch asl_turtlebot section4.launch
 \end{lstlisting}
 
 {\bf Problem 1: Once this is all running, which rostopics are available? Paste this list in your submission.}
@@ -242,6 +247,8 @@ Markers are a very helpful tool for visualizing intermediate rewards, computed t
 Code to create a Marker object can be found in the \texttt{code/} directory of today's section. Running it creates a green oblong sphere at world coordinates $(1, 1, 1)$, each in meters.
 
 {\bf Problem 4: Change the Marker to look like a normal red sphere and place it $1m$ in front of the robot (think about which axis this corresponds to), include a screenshot of your marker and its placement in your submission.}
+
+\textbf{Hint:} Thinking about changing the \texttt{frame\_id} of the marker to make it relative to a moving frame (\texttt{base\_footprint}) attached to the robot, and the position coordinates for this marker is just (1, 0, 0).
 
 \section{Cleanup}
 
